@@ -187,7 +187,7 @@ function Addpersonalinfo() {
                                                     <Progress percent={expenseState.needed.percent} /> 
                                                 </Grid>
                                                 <Grid item xs={1}>
-                                                    <NavigateNextIcon fontSize="large" style={{'cursor':'pointer'}} onClick={()=> navigate('/need')} />
+                                                    <NavigateNextIcon fontSize="large" style={{'cursor':'pointer'}} onClick={()=> navigate(`/need?valuation=${expenseState.needed.amount}`)} />
                                                 </Grid>
                                             </Grid>
                                             
