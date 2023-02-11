@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import {saveData}  from './slice/needSlice';
+import { saveData } from './slice/needSlice';
 
 
 import { Progress } from 'react-sweet-progress';
@@ -28,9 +28,9 @@ const data = [
 ]
 
 
-export default function NeedComponent() {
-    const [searchParams, setSearchParams] = useSearchParams(); // it is a hook for getting values from URL
-    let valuation = searchParams.get("valuation"); //valuation parameter from URL
+export default function NeedComponent({ valuation }) {
+    // const [searchParams, setSearchParams] = useSearchParams(); // it is a hook for getting values from URL
+    // let valuation = searchParams.get("valuation"); //valuation parameter from URL
     const [flag, setFlag] = useState(false); // flag for show and hide expense text
     const [expenses, setExpenses] = useState(data); // initial expense item list
     const [actualExpense, setActualExpense] = useState(valuation); //Total expense value
@@ -38,8 +38,6 @@ export default function NeedComponent() {
     const conExp = calculateTotalExpenses(expenses);
     const dispatch = useDispatch();
 
-    let remaining = actualExpense - conExp;
-    
 
     const updateFieldChanged = index => e => {
         let newArr = [...data];
@@ -47,8 +45,10 @@ export default function NeedComponent() {
         setExpenses(newArr);
     }
 
-        
-   
+    useEffect(() => {
+        setActualExpense(valuation);
+    }, [valuation]);
+
 
     return (
         <>
@@ -57,7 +57,7 @@ export default function NeedComponent() {
                     <CardContent>
                         <Typography variant="h6" component="h6" sx={{ p: 2 }}>
                             <span className='grid'>
-                                <div>Need</div>  <div>{remaining}</div>
+                                <div>Need</div>  <div>{actualExpense}</div>
                             </span>
 
                         </Typography>
@@ -84,7 +84,7 @@ export default function NeedComponent() {
 
                         </Stack>
                         <Stack spacing={3} sx={{ p: 2 }}>
-                            <Button variant="contained" onClick={()=> dispatch(saveData(remaining))}>Save</Button>
+                            <Button variant="contained" onClick={() => dispatch(saveData(remaining))}>Save</Button>
                         </Stack>
                     </CardContent>
                 </Card>

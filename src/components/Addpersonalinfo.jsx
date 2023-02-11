@@ -14,6 +14,10 @@ import Slider from '@mui/material/Slider';
 import Chip from '@mui/material/Chip';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Grid from '@mui/material/Grid';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector } from 'react-redux';
 import NeedComponent from './NeedComponent';
 
@@ -58,7 +62,7 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
 
 function valuetext(value) {
     return `${value}`;
-  }
+}
 
 
 function Addpersonalinfo() {
@@ -70,7 +74,6 @@ function Addpersonalinfo() {
     const [marriageAge, setMarriageAge] = useState(25);
     const [value, setValue] = useState(40000);
     const [haveFamily, setHaveFamily] = useState(false);
-    const [actionState, setActionState] = useState(true)
     const [expenseState, setExpenseState] = useState({
         needed: {
             amount: 0,
@@ -86,9 +89,9 @@ function Addpersonalinfo() {
         },
     })
     const navigate = useNavigate();
-    const neededExpense = useSelector((state) => state.neededExpense.value)
-      
-    
+    const neededExpense = useSelector((state) => state.neededExpense.value);
+
+
 
     const handleChange = () => {
         console.log("Clicked")
@@ -98,26 +101,15 @@ function Addpersonalinfo() {
 
     const handleSalaryChange = (event, newValue) => {
         setValue(newValue);
-        makeRatio(value);
-    }
-
-    const plan = () => {
-        makeRatio(value)
-        setActionState(false)
-    }
-
-    const makeRatio = (value) => {
-        let fiftyPercent = value / 2;
-        let restAmount = value - fiftyPercent;
-        let sixtyPercent = restAmount * (60/100);
-        let fourtyPercent = restAmount - sixtyPercent;
+        const expense = makeRatio(newValue);
+        const {fiftyPercent, sixtyPercent, fourtyPercent} = expense;
         setExpenseState({
             needed: {
                 amount: Math.round(fiftyPercent),
                 percent: 50
             },
             wish: {
-                amount:Math.round(sixtyPercent),
+                amount: Math.round(sixtyPercent),
                 percent: 30
             },
             savings: {
@@ -127,7 +119,18 @@ function Addpersonalinfo() {
         })
     }
 
-    
+     
+    const makeRatio = (value) => {
+        let fiftyPercent = value / 2;
+        let restAmount = value - fiftyPercent;
+        let sixtyPercent = restAmount * (60 / 100);
+        let fourtyPercent = restAmount - sixtyPercent;
+
+        return {fiftyPercent, sixtyPercent, fourtyPercent}
+        
+    }
+
+
 
     return (
         <>
@@ -154,12 +157,11 @@ function Addpersonalinfo() {
                                     null
                             }
                         </Stack>
-
                         <Stack spacing={3} sx={{ p: 2 }}>
-                            <Typography gutterBottom>Approx {haveFamily? 'Family' : 'Individual'} Montly Income {value}</Typography>
-                            <Slider 
-                                getAriaLabel={() => 'Salary Range'} 
-                                valueLabelDisplay="auto" 
+                            <Typography gutterBottom>Approx {haveFamily ? 'Family' : 'Individual'} Montly Income {value}</Typography>
+                            <Slider
+                                getAriaLabel={() => 'Salary Range'}
+                                valueLabelDisplay="auto"
                                 value={value}
                                 onChange={handleSalaryChange}
                                 getAriaValueText={valuetext}
@@ -168,76 +170,62 @@ function Addpersonalinfo() {
                                 max={150000}
                             />
                         </Stack>
-
                         <Stack spacing={2} sx={{ mt: 2 }}>
-                           {
-                                actionState === true ? 
-                                (
-                                    <Button variant="contained" onClick={plan}>Plan</Button>
-                                )
-                                :
-                                (
-                                    <>
-                                        <Typography variant="h6" component="h6" sx={{ p: 2 }}>Monthly Salary Spending Breakups</Typography>
-                                        <Card variant="outlined" sx={{ p: 2 }}>
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={11}>
-                                                    <Typography>
-                                                        <Chip label="Need" color="success" variant='outlined' sx={{ mr: 2 }}/>
-                                                        {expenseState.needed.amount}<br />
-                                                        
-                                                    </Typography>
-                                                    <Progress percent={expenseState.needed.percent} /> 
-                                                    <NeedComponent />
-                                                </Grid>
-                                                <Grid item xs={1}>
-                                                    <NavigateNextIcon fontSize="large" style={{'cursor':'pointer'}} onClick={()=> navigate(`/need?valuation=${expenseState.needed.amount}`)} />
-                                                </Grid>
-                                            </Grid>
-                                            
-                                            
-                                        </Card>
-                                        <Card variant="outlined" sx={{ p: 2 }}>
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={11}>
-                                                    <Typography>
-                                                        <Chip label="Want" color="warning" variant='outlined' sx={{ mr: 2 }}/>
-                                                        {expenseState.wish.amount}
-                                                    </Typography>
-                                                    <Progress percent={expenseState.wish.percent} />
-                                                </Grid>
-                                                <Grid item xs={1}>
-                                                    <NavigateNextIcon fontSize="large" style={{'cursor':'pointer'}} />
-                                                </Grid>
-                                            </Grid>
-                                        </Card>
-                                        <Card variant="outlined" sx={{ p: 2 }}>
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={11}>
-                                                    <Typography>
-                                                        <Chip label="Savings" color="primary" variant='outlined' sx={{ mr: 2 }} />
-                                                        {expenseState.savings.amount}
-                                                    </Typography>
-                                                    <Progress percent={expenseState.savings.percent} />
-                                                </Grid>
-                                                <Grid item xs={1}>
-                                                    <NavigateNextIcon fontSize="large" onClick={()=> navigate('/savings')} style={{'cursor':'pointer'}}/>
-                                                </Grid>
-                                            </Grid>
-                                        </Card>
-                                        
-                                    </>
-                                )
-                           }
-                            
-                           
-                        </Stack>
+                            <Typography variant="h6" component="h6" sx={{ p: 2 }}>Monthly Salary Spending Breakups</Typography>
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="my need"
+                                    id="need-header"
+                                >
+                                    <Typography>
+                                        <Chip label="Need" color="success" variant='outlined' sx={{ mr: 2 }} /> {expenseState.needed.amount}
+                                    </Typography>
+                                    <Progress percent={expenseState.needed.percent} />
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <NeedComponent valuation={expenseState.needed.amount} />
+                                </AccordionDetails>
+                            </Accordion>
 
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="my want"
+                                    id="want-header"
+                                >
+                                    <Typography>
+                                        <Chip label="Want" color="warning" variant='outlined' sx={{ mr: 2 }} />
+                                        {expenseState.wish.amount}
+                                    </Typography>
+                                    <Progress percent={expenseState.wish.percent} />
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    Want
+                                </AccordionDetails>
+                            </Accordion>
+
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="my want"
+                                    id="want-header"
+                                >
+                                    <Typography>
+                                        <Chip label="Savings" color="primary" variant='outlined' sx={{ mr: 2 }} />
+                                        {expenseState.savings.amount}
+                                    </Typography>
+                                    <Progress percent={expenseState.savings.percent} />
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    Save
+                                </AccordionDetails>
+                            </Accordion>
+
+                        </Stack>
                     </CardContent>
                 </Card>
             </Box>
-
-
         </>
     );
 }
