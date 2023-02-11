@@ -14,12 +14,13 @@ import Slider from '@mui/material/Slider';
 import Chip from '@mui/material/Chip';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Grid from '@mui/material/Grid';
+import { useSelector } from 'react-redux';
+import NeedComponent from './NeedComponent';
 
 
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
-
 
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
@@ -85,6 +86,7 @@ function Addpersonalinfo() {
         },
     })
     const navigate = useNavigate();
+    const neededExpense = useSelector((state) => state.neededExpense.value)
       
     
 
@@ -182,9 +184,11 @@ function Addpersonalinfo() {
                                                 <Grid item xs={11}>
                                                     <Typography>
                                                         <Chip label="Need" color="success" variant='outlined' sx={{ mr: 2 }}/>
-                                                        {expenseState.needed.amount}
+                                                        {expenseState.needed.amount}<br />
+                                                        
                                                     </Typography>
                                                     <Progress percent={expenseState.needed.percent} /> 
+                                                    <NeedComponent />
                                                 </Grid>
                                                 <Grid item xs={1}>
                                                     <NavigateNextIcon fontSize="large" style={{'cursor':'pointer'}} onClick={()=> navigate(`/need?valuation=${expenseState.needed.amount}`)} />

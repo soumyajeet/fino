@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import homeReducer from './components/slice/Homeslice'
+import needSlice from './components/slice/needSlice'
 
 export const store = configureStore({
   reducer: {
-    ageData: homeReducer
+    neededExpense: needSlice
   },
 })
+
+
