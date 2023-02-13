@@ -18,13 +18,13 @@ import { debounce } from "lodash";
 
 
 const data = [
-    { id: 1, item: 'Electricity', amount: 0 },
-    { id: 2, item: 'Internet', amount: 0 },
-    { id: 3, item: 'School Fees', amount: 0 },
-    { id: 4, item: 'School Bus', amount: 0 },
-    { id: 5, item: 'Household', amount: 0 },
-    { id: 6, item: 'Consolidated EMI', amount: 0 },
-    { id: 7, item: 'Cooking GAS', amount: 0 }
+    { id: 1, item: 'Electricity', amount: null },
+    { id: 2, item: 'Internet', amount: null },
+    { id: 3, item: 'School Fees', amount: null },
+    { id: 4, item: 'School Bus', amount: null },
+    { id: 5, item: 'Household', amount: null },
+    { id: 6, item: 'Consolidated EMI', amount: null },
+    { id: 7, item: 'Cooking GAS', amount: null }
 ]
 
 
@@ -49,47 +49,41 @@ export default function NeedComponent({ valuation }) {
         setActualExpense(valuation);
     }, [valuation]);
 
+    
 
     return (
-        <>
-            <Box sx={{ minWidth: 275 }}>
-                <Card variant="outlined">
-                    <CardContent>
-                        <Typography variant="h6" component="h6" sx={{ p: 2 }}>
-                            <span className='grid'>
-                                <div>Need</div>  <div>{actualExpense}</div>
-                            </span>
+        <Box sx={{ minWidth: 275 }}>
+            <Card variant="outlined">
+                <CardContent>
+                    <Typography variant="h6" component="h6" sx={{ p: 2, color: 'success.main' }}>
+                        Need {actualExpense}
+                    </Typography>
+                    <Stack spacing={3} sx={{ p: 2 }}>
+                        {
+                            expenses.map((elem, index) => {
+                                return (
+                                    <span key={index}>
+                                        <TextField
+                                            id="outlined-helperText"
+                                            label={elem.item}
+                                            name="amount"
+                                            value={elem.amount}
+                                            onChange={updateFieldChanged(index)}
+                                            fullWidth
+                                            disabled={true}
+                                        />
+                                    </span>
 
-                        </Typography>
-
-                        <Stack spacing={3} sx={{ p: 2 }}>
-
-                            {
-                                expenses.map((elem, index) => {
-                                    return (
-                                        <span key={index}>
-                                            <TextField
-                                                id="outlined-helperText"
-                                                label={elem.item}
-                                                name="amount"
-                                                value={elem.amount}
-                                                onChange={updateFieldChanged(index)}
-                                            />
-                                        </span>
-
-                                    )
-
-                                })
-                            }
-
-                        </Stack>
-                        <Stack spacing={3} sx={{ p: 2 }}>
-                            <Button variant="contained" onClick={() => dispatch(saveData(remaining))}>Save</Button>
-                        </Stack>
-                    </CardContent>
-                </Card>
-            </Box>
-        </>
+                                )
+                            })
+                        }
+                    </Stack>
+                    <Stack spacing={3} sx={{ p: 2 }}>
+                        <Button variant="contained" onClick={() => dispatch(saveData(conExp))}>Save</Button>
+                    </Stack>
+                </CardContent>
+            </Card>
+        </Box>
     )
 
 

@@ -20,11 +20,13 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector } from 'react-redux';
 import NeedComponent from './NeedComponent';
+import WantComponent from './WantComponent';
 
 
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
+import SavingsComponent from './SavingsComponent';
 
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
@@ -171,7 +173,7 @@ function Addpersonalinfo() {
                             />
                         </Stack>
                         <Stack spacing={2} sx={{ mt: 2 }}>
-                            <Typography variant="h6" component="h6" sx={{ p: 2 }}>Monthly Salary Spending Breakups</Typography>
+                            <Typography variant="h6" component="h6" sx={{ p: 2 }}>Monthly Spending Breakups</Typography>
                             <Accordion>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
@@ -179,7 +181,7 @@ function Addpersonalinfo() {
                                     id="need-header"
                                 >
                                     <Typography>
-                                        <Chip label="Need" color="success" variant='outlined' sx={{ mr: 2 }} /> {expenseState.needed.amount}
+                                        <Chip label={expenseState.needed.amount} color="success" variant='outlined' sx={{ mr: 2 }} /> 
                                     </Typography>
                                     <Progress percent={expenseState.needed.percent} />
                                 </AccordionSummary>
@@ -195,13 +197,12 @@ function Addpersonalinfo() {
                                     id="want-header"
                                 >
                                     <Typography>
-                                        <Chip label="Want" color="warning" variant='outlined' sx={{ mr: 2 }} />
-                                        {expenseState.wish.amount}
+                                        <Chip label={expenseState.wish.amount} color="warning" variant='outlined' sx={{ mr: 2 }} />
                                     </Typography>
                                     <Progress percent={expenseState.wish.percent} />
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    Want
+                                    <WantComponent valuation={expenseState.wish.amount} />
                                 </AccordionDetails>
                             </Accordion>
 
@@ -212,16 +213,14 @@ function Addpersonalinfo() {
                                     id="want-header"
                                 >
                                     <Typography>
-                                        <Chip label="Savings" color="primary" variant='outlined' sx={{ mr: 2 }} />
-                                        {expenseState.savings.amount}
+                                        <Chip label={expenseState.savings.amount} color="primary" variant='outlined' sx={{ mr: 2 }} />
                                     </Typography>
                                     <Progress percent={expenseState.savings.percent} />
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    Save
+                                    <SavingsComponent savingsValue={expenseState.savings.amount} />
                                 </AccordionDetails>
                             </Accordion>
-
                         </Stack>
                     </CardContent>
                 </Card>
