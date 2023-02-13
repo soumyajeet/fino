@@ -21,7 +21,7 @@ import {ageData} from './slice/Homeslice';
 
 export default function HomeComponent() {
 
-    const [value, setValue] = useState(dayjs('2014-08-18T21:11:54'));
+    const [value, setValue] = useState(dayjs('2014-08-18'));
     const [open, setOpen] = useState(false);
     const [age, setAge] = useState();
     const [comment, setComment] = useState('30 Lacs');
@@ -82,7 +82,7 @@ export default function HomeComponent() {
                             <Stack spacing={3}>
                                 <DesktopDatePicker
                                     label="Your D.O.B."
-                                    inputFormat="MM/DD/YYYY"
+                                    inputFormat="DD/MM/YYYY"
                                     value={value}
                                     onChange={handleChange}
                                     renderInput={(params) => <TextField {...params} />}

@@ -21,14 +21,14 @@ import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 
 
-export default function SavingsComponent() {
+export default function SavingsComponent({savingsValue}) {
     return (
         <>
             <Box sx={{ minWidth: 275 }}>
                 <Card variant="outlined">
                     <CardContent>
-                        <Typography variant="h6" component="h6" sx={{ p: 2 }}>
-                            Savings
+                        <Typography variant="h6" component="h6" sx={{ p: 2, color: 'primary.main' }}>
+                            Savings {savingsValue}
                         </Typography>
                     </CardContent>
                 </Card>
