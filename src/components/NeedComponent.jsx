@@ -47,6 +47,8 @@ export default function NeedComponent({ valuation }) {
 
     useEffect(() => {
         setActualExpense(valuation);
+        const response = valuation - expenses;
+        console.log(response);
     }, [valuation]);
 
     
@@ -70,7 +72,7 @@ export default function NeedComponent({ valuation }) {
                                             value={elem.amount}
                                             onChange={updateFieldChanged(index)}
                                             fullWidth
-                                            disabled={true}
+                                            disabled={flag}
                                         />
                                     </span>
 
