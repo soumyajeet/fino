@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -91,6 +91,9 @@ function Addpersonalinfo() {
         },
     })
     const navigate = useNavigate();
+    const needAmountRef = useRef(null);
+    const wantAmountRef = useRef(null);
+    const saveAmountRef = useRef(null);
     // const neededExpense = useSelector((state) => state.neededExpense.value);
 
 
@@ -138,10 +141,14 @@ function Addpersonalinfo() {
         let dist2 = balance - dist1;
 
         let needPercent = 100 * (data/value);
-        let wantPercent = 100 * (expenseState.wish.amount/value);
-        let savePercent = 100 * (expenseState.savings.amount/value);
+        let wantPercent = wantAmountRef.current.value;
+        let savePercent = saveAmountRef.current.value;
 
-        console.log({balance, dist1, dist2, needPercent, wantPercent, savePercent, value, expenseState});
+        console.log()
+
+        
+
+        console.log({balance, dist1, dist2, needPercent, wantPercent, savePercent, value, wantAmountRef, saveAmountRef});
         setExpenseState({
             needed: {
                 amount: Math.round(data),
@@ -149,11 +156,11 @@ function Addpersonalinfo() {
             },
             wish: {
                 amount: Math.round(expenseState.wish.amount + dist1),
-                percent: Math.round(wantPercent)
+                percent: Math.round(100 * (wantPercent/value))
             },
             savings: {
                 amount: Math.round(expenseState.savings.amount + dist2),
-                percent: Math.round(savePercent)
+                percent: Math.round(100 * (savePercent/value))
             }
         })
     }
@@ -240,6 +247,7 @@ function Addpersonalinfo() {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <WantComponent valuation={expenseState.wish.amount} />
+                                    <input type="text" ref={wantAmountRef} value={expenseState.wish.amount} hidden />
                                 </AccordionDetails>
                             </Accordion>
 
@@ -260,6 +268,7 @@ function Addpersonalinfo() {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <SavingsComponent savingsValue={expenseState.savings.amount} />
+                                    <input type="text" ref={saveAmountRef} value={expenseState.savings.amount} hidden />
                                 </AccordionDetails>
                             </Accordion>
                         </Stack>
