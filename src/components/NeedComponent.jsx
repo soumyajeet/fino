@@ -18,25 +18,26 @@ import { debounce } from "lodash";
 
 
 const data = [
-    { id: 1, item: 'Electricity', amount: null },
-    { id: 2, item: 'Internet', amount: null },
-    { id: 3, item: 'School Fees', amount: null },
-    { id: 4, item: 'School Bus', amount: null },
-    { id: 5, item: 'Household', amount: null },
-    { id: 6, item: 'Consolidated EMI', amount: null },
-    { id: 7, item: 'Cooking GAS', amount: null }
+    { id: 1, item: 'Electricity', amount: 0 },
+    { id: 2, item: 'Internet', amount: 0 },
+    { id: 3, item: 'School Fees', amount: 0 },
+    { id: 4, item: 'School Bus', amount: 0 },
+    { id: 5, item: 'Household', amount: 0 },
+    { id: 6, item: 'Consolidated EMI', amount: 0 },
+    { id: 7, item: 'Cooking GAS', amount: 0 }
 ]
 
 
-export default function NeedComponent({ valuation }) {
+export default function NeedComponent(props) {
+    const dispatch = useDispatch();
     // const [searchParams, setSearchParams] = useSearchParams(); // it is a hook for getting values from URL
     // let valuation = searchParams.get("valuation"); //valuation parameter from URL
+    
     const [flag, setFlag] = useState(false); // flag for show and hide expense text
     const [expenses, setExpenses] = useState(data); // initial expense item list
-    const [actualExpense, setActualExpense] = useState(valuation); //Total expense value
-    const [totalValue, setTotalValue] = useState();
-    const conExp = calculateTotalExpenses(expenses);
-    const dispatch = useDispatch();
+    const [actualExpense, setActualExpense] = useState(props.valuation); //Total expense value
+    const conExp = calculateTotalExpenses(expenses); // total expense
+    
 
 
     const updateFieldChanged = index => e => {
@@ -46,10 +47,8 @@ export default function NeedComponent({ valuation }) {
     }
 
     useEffect(() => {
-        setActualExpense(valuation);
-        const response = valuation - expenses;
-        console.log(response);
-    }, [valuation]);
+        setActualExpense(props.valuation);
+    }, [props.valuation]);
 
     
 
@@ -62,7 +61,7 @@ export default function NeedComponent({ valuation }) {
                     </Typography>
                     <Stack spacing={3} sx={{ p: 2 }}>
                         {
-                            expenses.map((elem, index) => {
+                            data.map((elem, index) => {
                                 return (
                                     <span key={index}>
                                         <TextField
@@ -81,7 +80,8 @@ export default function NeedComponent({ valuation }) {
                         }
                     </Stack>
                     <Stack spacing={3} sx={{ p: 2 }}>
-                        <Button variant="contained" onClick={() => dispatch(saveData(conExp))}>Save</Button>
+                        {/* <Button variant="contained" onClick={() => dispatch(saveData(conExp))}>Save</Button> */}
+                        <Button variant="contained" onClick={() => props.passData(conExp)}>Calculate</Button>
                     </Stack>
                 </CardContent>
             </Card>
@@ -95,6 +95,7 @@ export default function NeedComponent({ valuation }) {
         arr.forEach(element => {
             total = total + element.amount;
         });
+        console.log(total);
         return total;
     }
 
