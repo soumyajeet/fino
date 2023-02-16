@@ -74,7 +74,7 @@ function Addpersonalinfo() {
     const [age, setAge] = useState(ageValue);
     const [checked, setChecked] = useState(false);
     const [marriageAge, setMarriageAge] = useState(25);
-    const [value, setValue] = useState(40000);
+    const [value, setValue] = useState(0);
     const [haveFamily, setHaveFamily] = useState(false);
     const [expenseState, setExpenseState] = useState({
         needed: {
@@ -136,18 +136,24 @@ function Addpersonalinfo() {
         let balance = expenseState.needed.amount - data;
         let dist1 = balance * (60/100);
         let dist2 = balance - dist1;
+
+        let needPercent = 100 * (data/value);
+        let wantPercent = 100 * (expenseState.wish.amount/value);
+        let savePercent = 100 * (expenseState.savings.amount/value);
+
+        console.log({balance, dist1, dist2, needPercent, wantPercent, savePercent, value, expenseState});
         setExpenseState({
             needed: {
                 amount: Math.round(data),
-                percent: 50
+                percent: Math.round(needPercent)
             },
             wish: {
                 amount: Math.round(expenseState.wish.amount + dist1),
-                percent: 30
+                percent: Math.round(wantPercent)
             },
             savings: {
                 amount: Math.round(expenseState.savings.amount + dist2),
-                percent: 20
+                percent: Math.round(savePercent)
             }
         })
     }
