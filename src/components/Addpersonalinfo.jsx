@@ -91,7 +91,7 @@ function Addpersonalinfo() {
         },
     })
     const navigate = useNavigate();
-    const neededExpense = useSelector((state) => state.neededExpense.value);
+    // const neededExpense = useSelector((state) => state.neededExpense.value);
 
 
 
@@ -127,9 +127,29 @@ function Addpersonalinfo() {
         let restAmount = value - fiftyPercent;
         let sixtyPercent = restAmount * (60 / 100);
         let fourtyPercent = restAmount - sixtyPercent;
-
         return {fiftyPercent, sixtyPercent, fourtyPercent}
+    }
+
+    const sendData = (data) => {
+        console.log(data);
         
+        let balance = expenseState.needed.amount - data;
+        let dist1 = balance * (60/100);
+        let dist2 = balance - dist1;
+        setExpenseState({
+            needed: {
+                amount: Math.round(data),
+                percent: 50
+            },
+            wish: {
+                amount: Math.round(expenseState.wish.amount + dist1),
+                percent: 30
+            },
+            savings: {
+                amount: Math.round(expenseState.savings.amount + dist2),
+                percent: 20
+            }
+        })
     }
 
 
@@ -160,7 +180,9 @@ function Addpersonalinfo() {
                             }
                         </Stack>
                         <Stack spacing={3} sx={{ p: 2 }}>
-                            <Typography gutterBottom>Approx {haveFamily ? 'Family' : 'Individual'} Montly Income {value}</Typography>
+                            <Typography gutterBottom>
+                                Approx {haveFamily ? 'Family' : 'Individual'} Montly Income {value}
+                            </Typography>
                             <Slider
                                 getAriaLabel={() => 'Salary Range'}
                                 valueLabelDisplay="auto"
@@ -168,25 +190,30 @@ function Addpersonalinfo() {
                                 onChange={handleSalaryChange}
                                 getAriaValueText={valuetext}
                                 min={10000}
-                                step={3}
-                                max={150000}
+                                max={200000}
                             />
                         </Stack>
                         <Stack spacing={2} sx={{ mt: 2 }}>
-                            <Typography variant="h6" component="h6" sx={{ p: 2 }}>Monthly Spending Breakups</Typography>
+                            <Typography variant="h6" component="h6" sx={{ p: 2 }}>
+                                Monthly Spending Breakups
+                            </Typography>
                             <Accordion>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="my need"
-                                    id="need-header"
-                                >
+                                    id="need-header">
                                     <Typography>
-                                        <Chip label={expenseState.needed.amount} color="success" variant='outlined' sx={{ mr: 2 }} /> 
+                                        <Chip 
+                                            label={expenseState.needed.amount} 
+                                            color="success" 
+                                            variant='outlined' 
+                                            sx={{ mr: 2 }} 
+                                        /> 
                                     </Typography>
                                     <Progress percent={expenseState.needed.percent} />
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <NeedComponent valuation={expenseState.needed.amount} />
+                                    <NeedComponent valuation={expenseState.needed.amount} passData={sendData} />
                                 </AccordionDetails>
                             </Accordion>
 
@@ -194,10 +221,14 @@ function Addpersonalinfo() {
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="my want"
-                                    id="want-header"
-                                >
+                                    id="want-header">
                                     <Typography>
-                                        <Chip label={expenseState.wish.amount} color="warning" variant='outlined' sx={{ mr: 2 }} />
+                                        <Chip 
+                                            label={expenseState.wish.amount} 
+                                            color="warning" 
+                                            variant='outlined' 
+                                            sx={{ mr: 2 }} 
+                                        />
                                     </Typography>
                                     <Progress percent={expenseState.wish.percent} />
                                 </AccordionSummary>
@@ -210,10 +241,14 @@ function Addpersonalinfo() {
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="my want"
-                                    id="want-header"
-                                >
+                                    id="want-header">
                                     <Typography>
-                                        <Chip label={expenseState.savings.amount} color="primary" variant='outlined' sx={{ mr: 2 }} />
+                                        <Chip 
+                                            label={expenseState.savings.amount} 
+                                            color="primary" 
+                                            variant='outlined' 
+                                            sx={{ mr: 2 }} 
+                                        />
                                     </Typography>
                                     <Progress percent={expenseState.savings.percent} />
                                 </AccordionSummary>
