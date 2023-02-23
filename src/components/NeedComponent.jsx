@@ -68,7 +68,7 @@ export default function NeedComponent(props) {
                                             id="outlined-helperText"
                                             label={elem.item}
                                             name="amount"
-                                            value={elem.amount}
+                                            value={elem.amount || ""}
                                             onChange={updateFieldChanged(index)}
                                             fullWidth
                                             disabled={flag}
