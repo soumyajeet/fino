@@ -135,33 +135,14 @@ function Addpersonalinfo() {
 
     const sendData = (data) => {
         console.log(data);
-        
-        let balance = expenseState.needed.amount - data;
-        let dist1 = balance * (60/100);
-        let dist2 = balance - dist1;
-
-        let needPercent = 100 * (data/value);
-        let wantPercent = wantAmountRef.current.value;
-        let savePercent = saveAmountRef.current.value;
-
-        console.log()
-
-        
-
-        console.log({balance, dist1, dist2, needPercent, wantPercent, savePercent, value, wantAmountRef, saveAmountRef});
-        setExpenseState({
+        let needPercent = 100 * (data/value);   
+        setExpenseState({ 
+            ...expenseState,
             needed: {
                 amount: Math.round(data),
                 percent: Math.round(needPercent)
             },
-            wish: {
-                amount: Math.round(expenseState.wish.amount + dist1),
-                percent: Math.round(100 * (wantPercent/value))
-            },
-            savings: {
-                amount: Math.round(expenseState.savings.amount + dist2),
-                percent: Math.round(100 * (savePercent/value))
-            }
+            
         })
     }
 

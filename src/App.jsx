@@ -17,7 +17,7 @@ function App() {
 
   
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <Routes>
 
 
