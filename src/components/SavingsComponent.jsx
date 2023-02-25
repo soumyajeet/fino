@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
@@ -31,6 +32,8 @@ import "react-sweet-progress/lib/style.css";
 
 export default function SavingsComponent({ savingsValue }) {
     const [formValues, setFormValues] = useState([{ itemName: "", itemBudget: "" }]);
+
+    console.log(savingsValue)
 
     let handleChange = (i, e) => {
         console.log(i)
@@ -68,15 +71,13 @@ export default function SavingsComponent({ savingsValue }) {
             <Box sx={{ minWidth: 375 }}>
                 <Card variant="outlined">
                     <CardContent>
-                        <Typography variant="h6" component="h6" sx={{ p: 2, color: 'primary.main' }}>
-                            Savings {savingsValue}
-                        </Typography>
+                        
                         <Stack spacing={3} sx={{ p: 2 }}>
                             <form onSubmit={handleSubmit}>
                                 <div className="button-section">
                                     <Tooltip title="Add New Row">
                                         <IconButton color="warning" onClick={() => addFormFields()}>
-                                            <AddIcon />
+                                            <LibraryAddIcon />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Save Items">
@@ -93,11 +94,12 @@ export default function SavingsComponent({ savingsValue }) {
                                                 labelId="item-name"
                                                 id="item-name-save"
                                                 value={elem.itemName}
-                                                label="Item"
+                                                label="Savings Item"
                                                 name="itemName"
                                                 onChange={e => handleChange(index, e)}
                                                 sx={{ m: 2 }}
                                             >
+                                                
                                                 <MenuItem value={'LIC'}>LIC</MenuItem>
                                                 <MenuItem value={'NPS'}>NPS</MenuItem>
                                                 <MenuItem value={'PPF'}>PPF</MenuItem>

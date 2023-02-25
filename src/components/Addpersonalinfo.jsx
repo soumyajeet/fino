@@ -27,6 +27,7 @@ import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 import SavingsComponent from './SavingsComponent';
+import ratioCalculator from '../utils/ratioCalulator';
 
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
@@ -90,13 +91,7 @@ function Addpersonalinfo() {
             percent: 0
         },
     })
-    const navigate = useNavigate();
-    const needAmountRef = useRef(null);
-    const wantAmountRef = useRef(null);
-    const saveAmountRef = useRef(null);
-    // const neededExpense = useSelector((state) => state.neededExpense.value);
-
-
+   
 
     const handleChange = () => {
         console.log("Clicked")
@@ -106,6 +101,7 @@ function Addpersonalinfo() {
 
     const handleSalaryChange = (event, newValue) => {
         setValue(newValue);
+        console.log(newValue)
         const expense = makeRatio(newValue);
         const {fiftyPercent, sixtyPercent, fourtyPercent} = expense;
         setExpenseState({
@@ -132,20 +128,6 @@ function Addpersonalinfo() {
         let fourtyPercent = restAmount - sixtyPercent;
         return {fiftyPercent, sixtyPercent, fourtyPercent}
     }
-
-    const sendData = (data) => {
-        console.log(data);
-        let needPercent = 100 * (data/value);   
-        setExpenseState({ 
-            ...expenseState,
-            needed: {
-                amount: Math.round(data),
-                percent: Math.round(needPercent)
-            },
-            
-        })
-    }
-
 
 
     return (
@@ -198,7 +180,7 @@ function Addpersonalinfo() {
                                     id="need-header">
                                     <Typography>
                                         <Chip 
-                                            label={expenseState.needed.amount} 
+                                            label={"Need" + " " +expenseState.needed.amount} 
                                             color="success" 
                                             variant='outlined' 
                                             sx={{ mr: 2 }} 
@@ -207,7 +189,7 @@ function Addpersonalinfo() {
                                     <Progress percent={expenseState.needed.percent} />
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <NeedComponent valuation={expenseState.needed.amount} passData={sendData} />
+                                    <NeedComponent valuation={expenseState.needed.amount} /> 
                                 </AccordionDetails>
                             </Accordion>
 
@@ -218,7 +200,7 @@ function Addpersonalinfo() {
                                     id="want-header">
                                     <Typography>
                                         <Chip 
-                                            label={expenseState.wish.amount} 
+                                            label={ "Want" + " " +expenseState.wish.amount} 
                                             color="warning" 
                                             variant='outlined' 
                                             sx={{ mr: 2 }} 
@@ -228,7 +210,7 @@ function Addpersonalinfo() {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <WantComponent valuation={expenseState.wish.amount} />
-                                    <input type="text" ref={wantAmountRef} value={expenseState.wish.amount} hidden />
+                                    
                                 </AccordionDetails>
                             </Accordion>
 
@@ -239,7 +221,7 @@ function Addpersonalinfo() {
                                     id="want-header">
                                     <Typography>
                                         <Chip 
-                                            label={expenseState.savings.amount} 
+                                            label={ "Save" +" " +expenseState.savings.amount} 
                                             color="primary" 
                                             variant='outlined' 
                                             sx={{ mr: 2 }} 
@@ -249,7 +231,7 @@ function Addpersonalinfo() {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <SavingsComponent savingsValue={expenseState.savings.amount} />
-                                    <input type="text" ref={saveAmountRef} value={expenseState.savings.amount} hidden />
+                                    
                                 </AccordionDetails>
                             </Accordion>
                         </Stack>

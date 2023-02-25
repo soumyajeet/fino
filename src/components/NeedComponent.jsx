@@ -6,105 +6,102 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import SaveIcon from '@mui/icons-material/Save';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { saveData } from './slice/needSlice';
 
 
-import { Progress } from 'react-sweet-progress';
-import "react-sweet-progress/lib/style.css";
-import { debounce } from "lodash";
 
 
-const data = [
-    { id: 1, item: 'Electricity', amount: 0 },
-    { id: 2, item: 'Internet', amount: 0 },
-    { id: 3, item: 'School Fees', amount: 0 },
-    { id: 4, item: 'School Bus', amount: 0 },
-    { id: 5, item: 'Household', amount: 0 },
-    { id: 6, item: 'Consolidated EMI', amount: 0 },
-    { id: 7, item: 'Cooking GAS', amount: 0 }
-]
+function NeedComponent({ valuation }) {
+    const [formValues, setFormValues] = useState([{ itemName: "", itemBudget: "" }]);
 
+    console.log(valuation);
 
-export default function NeedComponent(props) {
-    const dispatch = useDispatch();
-    // const [searchParams, setSearchParams] = useSearchParams(); // it is a hook for getting values from URL
-    // let valuation = searchParams.get("valuation"); //valuation parameter from URL
-    
-    const [flag, setFlag] = useState(false); // flag for show and hide expense text
-    const [expenses, setExpenses] = useState(data); // initial expense item list
-    const [actualExpense, setActualExpense] = useState(props.valuation); //Total expense value
-    const conExp = calculateTotalExpenses(expenses); // total expense
-    
-
-
-    const updateFieldChanged = index => e => {
-        let newArr = [...data];
-        newArr[index].amount = +e.target.value;
-        setExpenses(newArr);
+    let handleChange = (i, e) => {
+        let newFormValues = [...formValues];
+        newFormValues[i][e.target.name] = e.target.value;
+        setFormValues(newFormValues);
     }
 
-    useEffect(() => {
-        setActualExpense(props.valuation);
-    }, [props.valuation]);
+    let addFormFields = () => {
+        console.log("Clicked")
+        setFormValues([...formValues, { itemName: "", itemBudget: "" }])
+    }
 
-    
+    let removeFormFields = (i) => {
+        let newFormValues = [...formValues];
+        newFormValues.splice(i, 1);
+        setFormValues(newFormValues)
+    }
+
+    let handleSubmit = (event) => {
+        event.preventDefault();
+        let sum = 0;
+        formValues.forEach((item, i) => {
+            sum = sum + parseInt(item.itemBudget);
+            if (sum >= valuation) {
+                console.log("Your Need amount is lesser than you added!");
+            } else {
+                alert(JSON.stringify(formValues));
+            }
+        })
+    }
+
 
     return (
-        <Box sx={{ minWidth: 275 }}>
+        <Box sx={{ minWidth: 375 }}>
             <Card variant="outlined">
                 <CardContent>
-                    <Typography variant="h6" component="h6" sx={{ p: 2, color: 'success.main' }}>
-                        Need {actualExpense}
-                    </Typography>
+                    
                     <Stack spacing={3} sx={{ p: 2 }}>
-                        {
-                            data.map((elem, index) => {
+                        <form onSubmit={handleSubmit}>
+                            <div className="button-section">
+                                <Tooltip title="Add New Row">
+                                    <IconButton color="warning" onClick={() => addFormFields()}>
+                                        <LibraryAddIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Save Items">
+                                    <IconButton variant="contained" color="success" type="submit">
+                                        <SaveIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                            {formValues.map((elem, index) => {
                                 return (
-                                    <span key={index}>
-                                        <TextField
-                                            id="outlined-helperText"
-                                            label={elem.item}
-                                            name="amount"
-                                            value={elem.amount || ""}
-                                            onChange={updateFieldChanged(index)}
-                                            fullWidth
-                                            disabled={flag}
-                                        />
-                                    </span>
-
+                                    <Box key={index} sx={{ mt: 2, mb: 2 }}>
+                                        <TextField name="itemName" value={elem.itemName || ""} onChange={e => handleChange(index, e)} label="Item" sx={{ m: 2 }} />
+                                        <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ m: 2 }} />
+                                        {
+                                            index ?
+                                                <Tooltip title="Delete Item">
+                                                    <IconButton color="error" onClick={() => removeFormFields(index)} sx={{ m: 2 }}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                : null
+                                        }
+                                    </Box>
                                 )
-                            })
-                        }
-                    </Stack>
-                    <Stack spacing={3} sx={{ p: 2 }}>
-                        {/* <Button variant="contained" onClick={() => dispatch(saveData(conExp))}>Save</Button> */}
-                        <Button variant="contained" onClick={() => props.passData(conExp)}>Calculate</Button>
+                            })}
+
+                        </form>
                     </Stack>
                 </CardContent>
             </Card>
         </Box>
     )
 
-
-
-    function calculateTotalExpenses(arr) {
-        let total = 0;
-        arr.forEach(element => {
-            total = total + element.amount;
-        });
-        console.log(total);
-        return total;
-    }
-
-
 }
 
-NeedComponent.propTypes = {
-    neededExpense: PropTypes.number,
-    totalExpense: PropTypes.number,
-    flag: PropTypes.bool
-};
 
+export default NeedComponent;
