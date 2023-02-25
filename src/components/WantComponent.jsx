@@ -6,6 +6,13 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import SaveIcon from '@mui/icons-material/Save';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
@@ -15,7 +22,7 @@ import { saveData } from './slice/needSlice';
 
 
 function WantComponent({ valuation }) {
-    const [formValues, setFormValues] = useState([{ itemName: "", itemBudget: "" }]);    
+    const [formValues, setFormValues] = useState([{ itemName: "", itemBudget: "" }]);
 
     let handleChange = (i, e) => {
         let newFormValues = [...formValues];
@@ -37,9 +44,9 @@ function WantComponent({ valuation }) {
     let handleSubmit = (event) => {
         event.preventDefault();
         let sum = 0;
-        formValues.forEach((item, i)=> {
-            sum  = sum + parseInt(item.itemBudget);
-            if(sum >= valuation) {
+        formValues.forEach((item, i) => {
+            sum = sum + parseInt(item.itemBudget);
+            if (sum >= valuation) {
                 console.log("Your want amount is lesser than you added!");
             } else {
                 alert(JSON.stringify(formValues));
@@ -52,28 +59,39 @@ function WantComponent({ valuation }) {
         <Box sx={{ minWidth: 375 }}>
             <Card variant="outlined">
                 <CardContent>
-                    <Typography variant="h6" component="h6" sx={{ p: 2, color: 'warning.main' }}>
-                        Want {valuation}
-                    </Typography>
+                    
                     <Stack spacing={3} sx={{ p: 2 }}>
                         <form onSubmit={handleSubmit}>
+                            <div className="button-section">
+                                <Tooltip title="Add New Row">
+                                    <IconButton color="warning" onClick={() => addFormFields()}>
+                                        <LibraryAddIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Save Items">
+                                    <IconButton variant="contained" color="success" type="submit">
+                                        <SaveIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
                             {formValues.map((elem, index) => {
                                 return (
-                                    <Box key={index} sx={{ m: 2 }}>
+                                    <Box key={index} sx={{ mt: 2, mb: 2 }}>
                                         <TextField name="itemName" value={elem.itemName || ""} onChange={e => handleChange(index, e)} label="Item" sx={{ m: 2 }} />
                                         <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ m: 2 }} />
                                         {
                                             index ?
-                                                <Button variant="contained" color="error" onClick={() => removeFormFields(index)} sx={{ m: 2 }}>X</Button>
+                                                <Tooltip title="Delete Item">
+                                                    <IconButton color="error" onClick={() => removeFormFields(index)} sx={{ m: 2 }}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Tooltip>
                                                 : null
                                         }
                                     </Box>
                                 )
                             })}
-                            <div className="button-section">
-                                <Button variant="contained" color="warning" onClick={() => addFormFields()} sx={{ m: 2 }}>Add</Button>
-                                <Button variant="contained" color="success" type="submit" sx={{ m: 2 }}>Submit</Button>
-                            </div>
+
                         </form>
                     </Stack>
                 </CardContent>
