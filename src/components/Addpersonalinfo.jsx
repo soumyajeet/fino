@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -18,15 +19,23 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import SaveIcon from '@mui/icons-material/Save';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { useSelector } from 'react-redux';
-import NeedComponent from './NeedComponent';
-import WantComponent from './WantComponent';
+
 
 
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 import SavingsComponent from './SavingsComponent';
+import NeedComponent from './NeedComponent';
+import WantComponent from './WantComponent';
 import ratioCalculator from '../utils/ratioCalulator';
 
 
@@ -70,13 +79,17 @@ function valuetext(value) {
 
 function Addpersonalinfo() {
     let { paramAge } = useParams();
+    const [formValues, setFormValues] = useState([{ itemName: "", itemBudget: "" }]);
     const [searchParams, setSearchParams] = useSearchParams();
     let ageValue = searchParams.get("age");
     const [age, setAge] = useState(ageValue);
     const [checked, setChecked] = useState(false);
+    const [otherIncomeChecked, setOtherIncomeChecked] = useState(false);
     const [marriageAge, setMarriageAge] = useState(25);
     const [value, setValue] = useState(0);
     const [haveFamily, setHaveFamily] = useState(false);
+    const [otherIncomeSource, setOtherIncomeSource] = useState(false);
+    const [totalIncome, setTotalIncome] = useState(0);
     const [expenseState, setExpenseState] = useState({
         needed: {
             amount: 0,
@@ -91,19 +104,18 @@ function Addpersonalinfo() {
             percent: 0
         },
     })
-   
 
-    const handleChange = () => {
-        console.log("Clicked")
+
+    const handleCheckbox = () => {
         setChecked(prev => !prev);
         setHaveFamily(prev => !prev);
     }
 
     const handleSalaryChange = (event, newValue) => {
         setValue(newValue);
-        console.log(newValue)
+        setTotalIncome(newValue);
         const expense = makeRatio(newValue);
-        const {fiftyPercent, sixtyPercent, fourtyPercent} = expense;
+        const { fiftyPercent, sixtyPercent, fourtyPercent } = expense;
         setExpenseState({
             needed: {
                 amount: Math.round(fiftyPercent),
@@ -120,20 +132,87 @@ function Addpersonalinfo() {
         })
     }
 
-     
+
     const makeRatio = (value) => {
         let fiftyPercent = value / 2;
         let restAmount = value - fiftyPercent;
         let sixtyPercent = restAmount * (60 / 100);
         let fourtyPercent = restAmount - sixtyPercent;
-        return {fiftyPercent, sixtyPercent, fourtyPercent}
+        return { fiftyPercent, sixtyPercent, fourtyPercent }
     }
 
+    let handleChange = (i, e) => {
+        let newFormValues = [...formValues];
+        newFormValues[i][e.target.name] = e.target.value;
+        setFormValues(newFormValues);
+    }
+
+    let addFormFields = () => {
+        setFormValues([...formValues, { itemName: "", itemBudget: "" }])
+    }
+
+    let removeFormFields = (i) => {
+        let newFormValues = [...formValues];
+        newFormValues.splice(i, 1);
+        setFormValues(newFormValues)
+    }
+
+    const handleOtherIncomeSource = () => {
+        setOtherIncomeChecked(prev=> !prev);
+        setOtherIncomeSource(pre=> !pre)
+    }
+
+    const updateTotalValue=(item)=> {
+        setValue(item);
+        const expense = makeRatio(item);
+        const { fiftyPercent, sixtyPercent, fourtyPercent } = expense;
+        setExpenseState({
+            needed: {
+                amount: Math.round(fiftyPercent),
+                percent: 50
+            },
+            wish: {
+                amount: Math.round(sixtyPercent),
+                percent: 30
+            },
+            savings: {
+                amount: Math.round(fourtyPercent),
+                percent: 20
+            }
+        })
+    }
+
+    let handleSubmit = (event) => {
+        event.preventDefault();
+        value
+        let sum = 0;
+        formValues.forEach((item, i) => {
+            sum = sum + parseInt(item.itemBudget);
+        })
+        setTotalIncome(totalIncome + sum);
+        const expense = makeRatio(totalIncome);
+        const { fiftyPercent, sixtyPercent, fourtyPercent } = expense;
+        setExpenseState({
+            needed: {
+                amount: Math.round(fiftyPercent),
+                percent: 50
+            },
+            wish: {
+                amount: Math.round(sixtyPercent),
+                percent: 30
+            },
+            savings: {
+                amount: Math.round(fourtyPercent),
+                percent: 20
+            }
+        })
+    }
+    
 
     return (
         <>
 
-            <Box sx={{ minWidth: 275 }}>
+            <Box sx={{ maxWidth: 590 }}>
                 <Card variant="outlined">
                     <CardContent>
                         <Typography variant="h6" component="h6" sx={{ p: 2 }}>
@@ -145,8 +224,8 @@ function Addpersonalinfo() {
                                 age >= marriageAge ?
                                     (
                                         <FormGroup>
-                                            <FormControlLabel
-                                                control={<Android12Switch onChange={handleChange} checked={checked} />}
+                                            <FormControlLabel name="married"
+                                                control={<Android12Switch onChange={handleCheckbox} checked={checked} />}
                                                 label="Are you married"
                                             />
                                         </FormGroup>
@@ -157,21 +236,68 @@ function Addpersonalinfo() {
                         </Stack>
                         <Stack spacing={3} sx={{ p: 2 }}>
                             <Typography gutterBottom>
-                                Approx {haveFamily ? 'Family' : 'Individual'} Montly Income {value}
+                                Approx {haveFamily ? 'Family' : 'Individual'} Montly Salaried Income
                             </Typography>
+                            <TextField value={value} onChange={(e) => updateTotalValue(e.target.value)} label="Income" sx={{ m: 2 }} />
                             <Slider
                                 getAriaLabel={() => 'Salary Range'}
                                 valueLabelDisplay="auto"
                                 value={value}
                                 onChange={handleSalaryChange}
                                 getAriaValueText={valuetext}
-                                min={10000}
+                                min={0}
                                 max={200000}
                             />
+                            <FormGroup>
+                                <FormControlLabel
+                                    name="otherIncome"
+                                    control={<Android12Switch onChange={handleOtherIncomeSource} checked={otherIncomeChecked} />}
+                                    label="Do you have other sources of income"
+                                />
+                            </FormGroup>
+                            {
+                                otherIncomeSource ? 
+                                <form onSubmit={handleSubmit}>
+                                <Box display="flex"
+                                    justifyContent="flex-end"
+                                    alignItems="flex-end">
+                                    <Tooltip title="Add New Row">
+                                        <IconButton color="warning" onClick={() => addFormFields()}>
+                                            <LibraryAddIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Save Items">
+                                        <IconButton variant="contained" color="success" type="submit">
+                                            <SaveIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
+                                {formValues.map((elem, index) => {
+                                    return (
+                                        <Box key={index} sx={{ mt: 2, mb: 2 }}>
+                                            <TextField name="itemName" value={elem.itemName || ""} onChange={e => handleChange(index, e)} label="Item" sx={{ m: 2 }} size="small" />
+                                            <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ m: 2 }} size="small" />
+                                            {
+                                                index ?
+                                                    <Tooltip title="Delete Item">
+                                                        <IconButton color="error" onClick={() => removeFormFields(index)} sx={{ m: 2 }}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    : null
+                                            }
+                                        </Box>
+                                    )
+                                })}
+
+                            </form>
+                            : null
+                            }
+                            
                         </Stack>
                         <Stack spacing={2} sx={{ mt: 2 }}>
                             <Typography variant="h6" component="h6" sx={{ p: 2 }}>
-                                Monthly Spending Breakups
+                                Monthly Spending Breakups of { totalIncome }
                             </Typography>
                             <Accordion>
                                 <AccordionSummary
@@ -179,17 +305,17 @@ function Addpersonalinfo() {
                                     aria-controls="my need"
                                     id="need-header">
                                     <Typography>
-                                        <Chip 
-                                            label={"Need" + " " +expenseState.needed.amount} 
-                                            color="success" 
-                                            variant='outlined' 
-                                            sx={{ mr: 2 }} 
-                                        /> 
+                                        <Chip
+                                            label={"Need" + " " + expenseState.needed.amount}
+                                            color="success"
+                                            variant='outlined'
+                                            sx={{ mr: 2 }}
+                                        />
                                     </Typography>
                                     <Progress percent={expenseState.needed.percent} />
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <NeedComponent valuation={expenseState.needed.amount} /> 
+                                    <NeedComponent valuation={expenseState.needed.amount} />
                                 </AccordionDetails>
                             </Accordion>
 
@@ -199,18 +325,18 @@ function Addpersonalinfo() {
                                     aria-controls="my want"
                                     id="want-header">
                                     <Typography>
-                                        <Chip 
-                                            label={ "Want" + " " +expenseState.wish.amount} 
-                                            color="warning" 
-                                            variant='outlined' 
-                                            sx={{ mr: 2 }} 
+                                        <Chip
+                                            label={"Want" + " " + expenseState.wish.amount}
+                                            color="warning"
+                                            variant='outlined'
+                                            sx={{ mr: 2 }}
                                         />
                                     </Typography>
                                     <Progress percent={expenseState.wish.percent} />
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <WantComponent valuation={expenseState.wish.amount} />
-                                    
+
                                 </AccordionDetails>
                             </Accordion>
 
@@ -220,18 +346,18 @@ function Addpersonalinfo() {
                                     aria-controls="my want"
                                     id="want-header">
                                     <Typography>
-                                        <Chip 
-                                            label={ "Save" +" " +expenseState.savings.amount} 
-                                            color="primary" 
-                                            variant='outlined' 
-                                            sx={{ mr: 2 }} 
+                                        <Chip
+                                            label={"Save" + " " + expenseState.savings.amount}
+                                            color="primary"
+                                            variant='outlined'
+                                            sx={{ mr: 2 }}
                                         />
                                     </Typography>
                                     <Progress percent={expenseState.savings.percent} />
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <SavingsComponent savingsValue={expenseState.savings.amount} />
-                                    
+
                                 </AccordionDetails>
                             </Accordion>
                         </Stack>
@@ -240,6 +366,11 @@ function Addpersonalinfo() {
             </Box>
         </>
     );
+}
+
+Addpersonalinfo.propTypes  = {
+    value: PropTypes.number,
+    totalIncome: PropTypes.number
 }
 
 export default Addpersonalinfo;

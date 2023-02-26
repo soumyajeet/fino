@@ -58,13 +58,14 @@ function NeedComponent({ valuation }) {
 
 
     return (
-        <Box sx={{ minWidth: 375 }}>
-            <Card variant="outlined">
-                <CardContent>
-                    
+        <Box sx={{ maxWidth: 575 }}>
+            
+
                     <Stack spacing={3} sx={{ p: 2 }}>
                         <form onSubmit={handleSubmit}>
-                            <div className="button-section">
+                            <Box display="flex"
+                                justifyContent="flex-end"
+                                alignItems="flex-end">
                                 <Tooltip title="Add New Row">
                                     <IconButton color="warning" onClick={() => addFormFields()}>
                                         <LibraryAddIcon />
@@ -75,12 +76,12 @@ function NeedComponent({ valuation }) {
                                         <SaveIcon />
                                     </IconButton>
                                 </Tooltip>
-                            </div>
+                            </Box>
                             {formValues.map((elem, index) => {
                                 return (
-                                    <Box key={index} sx={{ mt: 2, mb: 2 }}>
-                                        <TextField name="itemName" value={elem.itemName || ""} onChange={e => handleChange(index, e)} label="Item" sx={{ m: 2 }} />
-                                        <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ m: 2 }} />
+                                    <Box key={index} >
+                                        <TextField name="itemName" value={elem.itemName || ""} onChange={e => handleChange(index, e)} label="Item" sx={{ m: 2 }} size="small" />
+                                        <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ m: 2 }} size="small" />
                                         {
                                             index ?
                                                 <Tooltip title="Delete Item">
@@ -96,8 +97,7 @@ function NeedComponent({ valuation }) {
 
                         </form>
                     </Stack>
-                </CardContent>
-            </Card>
+                
         </Box>
     )
 

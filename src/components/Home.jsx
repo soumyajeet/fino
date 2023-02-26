@@ -71,7 +71,7 @@ export default function HomeComponent() {
 
     return (
         <>
-            <Box sx={{ minWidth: 275 }}>
+            <Box sx={{ minWidth: 375 }}>
                 <Card variant="outlined" elevation={0}>
                     <CardContent>
                         <Typography variant="h6" component="h6" sx={{ p: 2 }}>
