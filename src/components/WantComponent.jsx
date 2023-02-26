@@ -57,45 +57,45 @@ function WantComponent({ valuation }) {
 
     return (
         <Box sx={{ minWidth: 375 }}>
-            <Card variant="outlined">
-                <CardContent>
-                    
-                    <Stack spacing={3} sx={{ p: 2 }}>
-                        <form onSubmit={handleSubmit}>
-                            <div className="button-section">
-                                <Tooltip title="Add New Row">
-                                    <IconButton color="warning" onClick={() => addFormFields()}>
-                                        <LibraryAddIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Save Items">
-                                    <IconButton variant="contained" color="success" type="submit">
-                                        <SaveIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                            {formValues.map((elem, index) => {
-                                return (
-                                    <Box key={index} sx={{ mt: 2, mb: 2 }}>
-                                        <TextField name="itemName" value={elem.itemName || ""} onChange={e => handleChange(index, e)} label="Item" sx={{ m: 2 }} />
-                                        <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ m: 2 }} />
-                                        {
-                                            index ?
-                                                <Tooltip title="Delete Item">
-                                                    <IconButton color="error" onClick={() => removeFormFields(index)} sx={{ m: 2 }}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                : null
-                                        }
-                                    </Box>
-                                )
-                            })}
 
-                        </form>
-                    </Stack>
-                </CardContent>
-            </Card>
+
+            <Stack spacing={3} sx={{ p: 2 }}>
+                <form onSubmit={handleSubmit}>
+                    <Box display="flex"
+                        justifyContent="flex-end"
+                        alignItems="flex-end">
+                        <Tooltip title="Add New Row">
+                            <IconButton color="warning" onClick={() => addFormFields()}>
+                                <LibraryAddIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Save Items">
+                            <IconButton variant="contained" color="success" type="submit">
+                                <SaveIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                    {formValues.map((elem, index) => {
+                        return (
+                            <Box key={index} sx={{ mt: 2, mb: 2 }}>
+                                <TextField name="itemName" value={elem.itemName || ""} onChange={e => handleChange(index, e)} label="Item" sx={{ m: 2 }} size="small" />
+                                <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ m: 2 }} size="small" />
+                                {
+                                    index ?
+                                        <Tooltip title="Delete Item">
+                                            <IconButton color="error" onClick={() => removeFormFields(index)} sx={{ m: 2 }}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        : null
+                                }
+                            </Box>
+                        )
+                    })}
+
+                </form>
+            </Stack>
+
         </Box>
     )
 

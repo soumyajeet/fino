@@ -31,7 +31,7 @@ import "react-sweet-progress/lib/style.css";
 
 
 export default function SavingsComponent({ savingsValue }) {
-    const [formValues, setFormValues] = useState([{ itemName: "", itemBudget: "" }]);
+    const [formValues, setFormValues] = useState([{ itemName: "Public Provident Fund", itemBudget: "" }]);
 
     console.log(savingsValue)
 
@@ -67,62 +67,63 @@ export default function SavingsComponent({ savingsValue }) {
         })
     }
     return (
-        <>
-            <Box sx={{ minWidth: 375 }}>
-                <Card variant="outlined">
-                    <CardContent>
-                        
-                        <Stack spacing={3} sx={{ p: 2 }}>
-                            <form onSubmit={handleSubmit}>
-                                <div className="button-section">
-                                    <Tooltip title="Add New Row">
-                                        <IconButton color="warning" onClick={() => addFormFields()}>
-                                            <LibraryAddIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Save Items">
-                                        <IconButton variant="contained" color="success" type="submit">
-                                            <SaveIcon />
-                                        </IconButton>
-                                    </Tooltip>
 
-                                </div>
-                                {formValues.map((elem, index) => {
-                                    return (
-                                        <Box key={index} sx={{ mt: 2, mb: 2 }}>
-                                            <Select
-                                                labelId="item-name"
-                                                id="item-name-save"
-                                                value={elem.itemName}
-                                                label="Savings Item"
-                                                name="itemName"
-                                                onChange={e => handleChange(index, e)}
-                                                sx={{ m: 2 }}
-                                            >
-                                                
-                                                <MenuItem value={'LIC'}>LIC</MenuItem>
-                                                <MenuItem value={'NPS'}>NPS</MenuItem>
-                                                <MenuItem value={'PPF'}>PPF</MenuItem>
-                                            </Select>
-                                            <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ mt: 2, mb: 2 }} />
-                                            {
-                                                index ?
-                                                    <Tooltip title="Delete Item">
-                                                        <IconButton color="error" onClick={() => removeFormFields(index)} sx={{ m: 2 }}>
-                                                            <DeleteIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                    : null
-                                            }
-                                        </Box>
-                                    )
-                                })}
+        <Box sx={{ minWidth: 375 }}>
+            <Stack spacing={3} sx={{ p: 2 }}>
+                <form onSubmit={handleSubmit}>
+                    <Box display="flex"
+                        justifyContent="flex-end"
+                        alignItems="flex-end">
+                        <Tooltip title="Add New Row">
+                            <IconButton color="warning" onClick={() => addFormFields()}>
+                                <LibraryAddIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Save Items">
+                            <IconButton variant="contained" color="success" type="submit">
+                                <SaveIcon />
+                            </IconButton>
+                        </Tooltip>
 
-                            </form>
-                        </Stack>
-                    </CardContent>
-                </Card>
-            </Box>
-        </>
+                    </Box>
+                    {formValues.map((elem, index) => {
+                        return (
+                            <Box key={index} sx={{ mt: 2, mb: 2 }}>
+                                <Select
+                                    labelId="item-name"
+                                    id="item-name-save"
+                                    value={elem.itemName}
+                                    label="Savings Item"
+                                    name="itemName"
+                                    onChange={e => handleChange(index, e)}
+                                    sx={{ m: 2 }}
+                                    autoWidth="true"
+                                    size="small"
+                                >
+                                    <MenuItem value={'Sukanya Samriddhi'}>Sukanya Samriddhi</MenuItem>
+                                    <MenuItem value={'Life Insurance Corporation'}>Life Insurance Corporation</MenuItem>
+                                    <MenuItem value={'National Pension Scheme'}>National Pension Scheme</MenuItem>
+                                    <MenuItem value={'Public Provident Fund'}>Public Provident Fund</MenuItem>
+                                    <MenuItem value={'Kishan Vikash Patra'}>Kishan Vikash Patra</MenuItem>
+                                    <MenuItem value={'Sovereign Gold Bond'}>Sovereign Gold Bond</MenuItem>
+                                </Select>
+                                <TextField name="itemBudget" value={elem.itemBudget || ""} onChange={e => handleChange(index, e)} label="Budget" sx={{ mt: 2, mb: 2 }} size="small" />
+                                {
+                                    index ?
+                                        <Tooltip title="Delete Item">
+                                            <IconButton color="error" onClick={() => removeFormFields(index)} sx={{ m: 2 }}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        : null
+                                }
+                            </Box>
+                        )
+                    })}
+
+                </form>
+            </Stack>
+        </Box>
+
     )
 }
