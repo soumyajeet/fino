@@ -15,8 +15,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Snackbar from '@mui/material/Snackbar';
 import Addpersonalinfo from "./Addpersonalinfo";
-import {ageData} from './slice/Homeslice';
-
 
 
 export default function HomeComponent() {
@@ -27,6 +25,7 @@ export default function HomeComponent() {
     const [comment, setComment] = useState('30 Lacs');
     const [btnFlag, setBtnFlag] = useState();
     const [disable, setDisable] = useState(false);
+    const [isHomePage, setHomePage] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -39,13 +38,13 @@ export default function HomeComponent() {
         const now = dayjs()
         const dateDiff = now.diff(value, 'year');
         console.log(dateDiff);
-        
+
         setAge(dateDiff);
         setOpen(true);
         setBtnFlag(true);
 
         if (dateDiff > 28 && dateDiff < 35) {
-            setComment(`Ideal Asset 10 Lacs and above`)           
+            setComment(`Ideal Asset 10 Lacs and above`)
         } else if (dateDiff > 35 && dateDiff < 45) {
             setComment(`Ideal Asset 20 Lacs and above`)
         } else if (dateDiff > 22 && dateDiff < 28) {
@@ -66,55 +65,66 @@ export default function HomeComponent() {
 
     const optimize = () => {
         console.log('Optimize')
-        navigate(`addinfo?age=${age}`);
+        setHomePage(true)
     }
 
     return (
         <>
-            <Box sx={{ minWidth: 375 }}>
-                <Card variant="outlined" elevation={0}>
-                    <CardContent>
-                        <Typography variant="h6" component="h6" sx={{ p: 2 }}>
-                            Please Enter D.O.B & Know Your Ideal Assets Value
-                        </Typography>
+            {isHomePage ? (
+                <Addpersonalinfo userage={age} />
+            )
 
-                        <LocalizationProvider dateAdapter={AdapterDayjs} sx={{ mt: 2 }}>
-                            <Stack spacing={3}>
-                                <DesktopDatePicker
-                                    label="Your D.O.B."
-                                    inputFormat="DD/MM/YYYY"
-                                    value={value}
-                                    onChange={handleChange}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </Stack>
-                        </LocalizationProvider>
+                : (
+                    <>
+                        <Box sx={{ minWidth: 375 }}>
+                            <Card variant="outlined" elevation={0}>
+                                <CardContent>
+                                    <Typography variant="h6" component="h6" sx={{ p: 2 }}>
+                                        Please Enter D.O.B & Know Your Ideal Assets Value
+                                    </Typography>
 
-                        <Stack spacing={2} direction="row" sx={{ mt: 2 }}>
-                            {
-                                btnFlag ? 
-                                (
-                                    <Button variant="contained" onClick={optimize} disabled={disable} >Optimize</Button>
-                                )
-                                : 
-                                (
-                                    <Button variant="contained" onClick={calculateAge}>Next</Button>
-                                )
-                            }
-                            
-                        </Stack>
-                    </CardContent>
-                </Card>
-            </Box>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} sx={{ mt: 2 }}>
+                                        <Stack spacing={3}>
+                                            <DesktopDatePicker
+                                                label="Your D.O.B."
+                                                inputFormat="DD/MM/YYYY"
+                                                value={value}
+                                                onChange={handleChange}
+                                                renderInput={(params) => <TextField {...params} />}
+                                            />
+                                        </Stack>
+                                    </LocalizationProvider>
+
+                                    <Stack spacing={2} direction="row" sx={{ mt: 2 }}>
+                                        {
+                                            btnFlag ?
+                                                (
+                                                    <Button variant="contained" onClick={optimize} disabled={disable} >Optimize</Button>
+                                                )
+                                                :
+                                                (
+                                                    <Button variant="contained" onClick={calculateAge}>Next</Button>
+                                                )
+                                        }
+
+                                    </Stack>
+                                </CardContent>
+                            </Card>
+                        </Box>
 
 
-            <Snackbar 
-                open={open} 
-                autoHideDuration={6000} 
-                onClose={handleClose} 
-                message={comment}>  
-            </Snackbar>
-            
+                        <Snackbar
+                            open={open}
+                            autoHideDuration={6000}
+                            onClose={handleClose}
+                            message={comment}>
+                        </Snackbar>
+                    </>
+                )
+
+            }
+
+
         </>
 
     )
