@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -12,25 +12,17 @@ import SavingsComponent from './components/SavingsComponent'
 import NeedComponent from './components/NeedComponent'
 
 
+const Home = lazy(()=> import('./components/Home'))
 
 function App() {
 
   
   return (
     <Container maxWidth="md">
-      <Routes>
-
-
-        <Route exact path="addinfo" element={<Addpersonalinfo />} />
-        <Route exact path="savings" element={<SavingsComponent />} />
-        <Route exact path="need" element={<NeedComponent />} />
-
-
-        <Route exact path="/" element={<HomeComponent />} />
-
-
-
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Home />
+      </Suspense>
+      
     </Container>
   )
 }
