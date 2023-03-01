@@ -20,6 +20,7 @@ import { useDispatch } from 'react-redux';
 
 
 function NeedComponent({ valuation }) {
+    const dispatch = useDispatch();
     const [formValues, setFormValues] = useState([{ itemName: "", itemBudget: "" }]);
 
     console.log(valuation);
@@ -49,7 +50,9 @@ function NeedComponent({ valuation }) {
             if (sum >= valuation) {
                 console.log("Your Need amount is lesser than you added!");
             } else {
-                alert(JSON.stringify(formValues));
+                dispatch(saveNeededAmount({
+                    neededamount: sum
+                }))
             }
         })
     }

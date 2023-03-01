@@ -35,8 +35,8 @@ import SavingsComponent from './SavingsComponent';
 
 import initialRatio from '../utils/ratioCalulator';
 
-export default function MonthlySalaryBreakup({totalincome}) {
-    
+export default function MonthlySalaryBreakup({ totalincome }) {
+
     const [income, setIncome] = useState(totalincome);
     const [expenseState, setExpenseState] = useState({
         needed: {
@@ -52,10 +52,10 @@ export default function MonthlySalaryBreakup({totalincome}) {
             percent: 0
         },
     })
-    
-    useEffect(()=>{
-        const expense = initialRatio(income, 50,30,20);
-        const {x, y, z} = expense;
+
+    useEffect(() => {
+        const expense = initialRatio(income, 50, 30, 20);
+        const { x, y, z } = expense;
         setExpenseState({
             needed: {
                 amount: parseFloat(x).toFixed(2),
@@ -70,11 +70,11 @@ export default function MonthlySalaryBreakup({totalincome}) {
                 percent: 20
             }
         })
-        
-    },[])
-     
-    
-    
+
+    }, [])
+
+
+
     return (
         <Box sx={{ maxWidth: 590 }}>
             <Card variant="outlined">
@@ -89,14 +89,14 @@ export default function MonthlySalaryBreakup({totalincome}) {
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="my need"
                                 id="need-header">
-                                <Typography>
-                                    <Chip
-                                        label={"Need" + " " + expenseState.needed.amount}
-                                        color="success"
-                                        variant='outlined'
-                                        sx={{ mr: 2 }}
-                                    />
-                                </Typography>
+
+                                <Chip
+                                    label={"Need" + " " + expenseState.needed.amount}
+                                    color="success"
+                                    variant='outlined'
+                                    sx={{ mr: 2 }}
+                                />
+
                                 <Progress percent={expenseState.needed.percent} />
                             </AccordionSummary>
                             <AccordionDetails>
@@ -109,14 +109,14 @@ export default function MonthlySalaryBreakup({totalincome}) {
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="my want"
                                 id="want-header">
-                                <Typography>
-                                    <Chip
-                                        label={"Want" + " " + expenseState.wish.amount}
-                                        color="warning"
-                                        variant='outlined'
-                                        sx={{ mr: 2 }}
-                                    />
-                                </Typography>
+
+                                <Chip
+                                    label={"Want" + " " + expenseState.wish.amount}
+                                    color="warning"
+                                    variant='outlined'
+                                    sx={{ mr: 2 }}
+                                />
+
                                 <Progress percent={expenseState.wish.percent} />
                             </AccordionSummary>
                             <AccordionDetails>
@@ -130,14 +130,14 @@ export default function MonthlySalaryBreakup({totalincome}) {
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="my want"
                                 id="want-header">
-                                <Typography>
-                                    <Chip
-                                        label={"Save" + " " + expenseState.savings.amount}
-                                        color="primary"
-                                        variant='outlined'
-                                        sx={{ mr: 2 }}
-                                    />
-                                </Typography>
+
+                                <Chip
+                                    label={"Save" + " " + expenseState.savings.amount}
+                                    color="primary"
+                                    variant='outlined'
+                                    sx={{ mr: 2 }}
+                                />
+
                                 <Progress percent={expenseState.savings.percent} />
                             </AccordionSummary>
                             <AccordionDetails>
