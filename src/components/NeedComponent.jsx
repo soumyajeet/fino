@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Grid from '@mui/material/Grid';
 import Box from "@mui/material/Box";
@@ -9,10 +9,14 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { saveNeededAmount } from '../toolkits/slices/incomeSlice';
 
-function NeedComponent({ valuation }) {
+function NeedComponent() {
+    const dataObj = useSelector((state) => {
+        return state.data
+    })
+
     const dispatch = useDispatch();
     const [formValues, setFormValues] = useState([
         { itemName: "", itemBudget: 0 },
@@ -41,7 +45,7 @@ function NeedComponent({ valuation }) {
         let sum = 0;
         formValues.forEach((item, i) => {
             sum = sum + parseInt(item.itemBudget);
-            if (sum >= valuation) {
+            if (sum >= dataObj.totalIncome.totalIncome) {
                 console.log("Your Need amount is lesser than you added!");
             } else {
                 dispatch(
@@ -53,6 +57,8 @@ function NeedComponent({ valuation }) {
             }
         });
     };
+
+    console.log(dataObj)
 
     return (
         <Box sx={{ maxWidth: 700 }}>

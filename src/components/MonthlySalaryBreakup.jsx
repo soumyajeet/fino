@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -15,7 +13,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import NeedComponent from './NeedComponent';
 import WantComponent from './WantComponent';
@@ -91,7 +89,7 @@ export default function MonthlySalaryBreakup() {
                                 <Progress percent={expenseState.needed.percent} />
                             </AccordionSummary>
                             <AccordionDetails>
-                                <NeedComponent valuation={expenseState.needed.amount} />
+                                <NeedComponent />
                             </AccordionDetails>
                         </Accordion>
 
