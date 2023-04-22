@@ -6,28 +6,16 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Snackbar from '@mui/material/Snackbar';
-import { styled } from '@mui/material/styles';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Chip from '@mui/material/Chip';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import Grid from '@mui/material/Grid';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import SaveIcon from '@mui/icons-material/Save';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import { useSelector } from 'react-redux';
+
 
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
+import { useSelector, useDispatch } from 'react-redux';
 
 import NeedComponent from './NeedComponent';
 import WantComponent from './WantComponent';
@@ -35,9 +23,12 @@ import SavingsComponent from './SavingsComponent';
 
 import initialRatio from '../utils/ratioCalulator';
 
-export default function MonthlySalaryBreakup({ totalincome }) {
+export default function MonthlySalaryBreakup() {
+    const totalIncome = useSelector((state) => {
+        return state.data.totalIncome.totalIncome
+    });
 
-    const [income, setIncome] = useState(totalincome);
+    const [income, setIncome] = useState(totalIncome);
     const [expenseState, setExpenseState] = useState({
         needed: {
             amount: 0,

@@ -20,7 +20,7 @@ function App() {
   return (
     <Container maxWidth="md">
       <Suspense fallback={<div>Loading...</div>}>
-        <Home />
+        <Addpersonalinfo />
       </Suspense>
       
     </Container>

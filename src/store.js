@@ -3,7 +3,7 @@ import incomeSlice from './toolkits/slices/incomeSlice'
 
 export const store = configureStore({
   reducer: {
-    income: incomeSlice
+    data: incomeSlice
   },
 })
 
