@@ -69,12 +69,11 @@ function valuetext(value) {
 
 
 function Addpersonalinfo({ userage }) {
-    let { paramAge } = useParams();
     const [formValues, setFormValues] = useState([{ itemName: "", itemBudget: 0 }]);
-    const [age, setAge] = useState(userage); // setting the age coming from home page
+    const [age] = useState(userage); // setting the age coming from home page
     const [checkMarriedBtn, setCheckMarriedBtn] = useState(false); //married checkbox button
     const [otherIncomeCheckedBtn, setOtherIncomeCheckedBtn] = useState(false); // income check button
-    const [marriageAge, setMarriageAge] = useState(25); // marriage condition
+    const [marriageAge] = useState(25); // marriage condition
     const [value, setValue] = useState(0);  //default income value
     const [haveFamily, setHaveFamily] = useState(false); // family section show/hide
     const [toggleOtherIncomeSourceSectionView, setToggleOtherIncomeSourceSectionView] = useState(false);  // other income source form fields section

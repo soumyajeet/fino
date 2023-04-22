@@ -28,7 +28,7 @@ export default function MonthlySalaryBreakup() {
         return state.data.totalIncome.totalIncome
     });
 
-    const [income, setIncome] = useState(totalIncome);
+    const [income] = useState(totalIncome);
     const [expenseState, setExpenseState] = useState({
         needed: {
             amount: 0,
