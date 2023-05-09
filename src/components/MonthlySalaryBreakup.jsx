@@ -26,6 +26,10 @@ export default function MonthlySalaryBreakup() {
         return state.data.totalIncome.totalIncome
     });
 
+    const needExpense = useSelector((state) => {
+        return state.data.needData.totalNeededAmount
+    })
+
     const [income] = useState(totalIncome);
     const [expenseState, setExpenseState] = useState({
         needed: {
@@ -60,8 +64,13 @@ export default function MonthlySalaryBreakup() {
             }
         })
 
-    }, [])
+        // if (needExpense) {
+        //     let temp = { ...expenseState };
+        //     temp.needed.amount = expenseState.needed.amount - needExpense;
+        //     setExpenseState(temp);
+        // }
 
+    }, [])
 
 
     return (

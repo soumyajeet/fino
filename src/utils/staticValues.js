@@ -1,11 +1,11 @@
 const staticValues = {
     salary: {
-        minSalary:0,
-        maxSalary:200000,
+        minSalary: 10000,
+        maxSalary: 200000,
     },
-    
 
-    
+
+
 
 }
 

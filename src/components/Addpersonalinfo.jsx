@@ -204,7 +204,7 @@ function Addpersonalinfo({ userage }) {
                                     <Typography gutterBottom>
                                         Approx {haveFamily ? 'Family' : 'Individual'} Montly Income
                                     </Typography>
-                                    {/* <TextField value={value} onChange={(e) => updateTotalValue(e.target.value)} label="Income" sx={{ m: 2 }} /> */}
+                                    <TextField value={value} onChange={(e) => updateTotalValue(e.target.value)} label="Income" sx={{ m: 2 }} />
                                     <Typography gutterBottom variant="h3" component="h3">
                                         {value}
                                     </Typography>

@@ -56,9 +56,8 @@ function NeedComponent() {
                 );
             }
         });
-    };
 
-    console.log(dataObj)
+    };
 
     return (
         <Box sx={{ maxWidth: 700 }}>
