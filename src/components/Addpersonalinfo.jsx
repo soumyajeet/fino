@@ -23,8 +23,6 @@ import { useDispatch } from 'react-redux';
 import { saveEarning } from '../toolkits/slices/incomeSlice'
 
 
-
-import { useParams } from 'react-router-dom';
 import "react-sweet-progress/lib/style.css";
 import MonthlySalaryBreakup from './MonthlySalaryBreakup';
 import staticValues from '../utils/staticValues';
